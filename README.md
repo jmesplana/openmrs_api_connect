@@ -1,6 +1,3 @@
-Absolutely. I'll format the documentation in markdown for easy copy-pasting into GitHub.
-
----
 
 # OpenMRS REST API Client for Location Operations
 
@@ -91,6 +88,6 @@ If providing a CSV file for location data, the script expects:
 
 `omrs_locations_csv.py` offers a convenient interface to interact with the OpenMRS API for location-related tasks. Ensure that your OpenMRS instance and API are properly set up and accessible before using this script.
 
----
 
-You can now copy and paste the above documentation directly into your GitHub README.
+
+
