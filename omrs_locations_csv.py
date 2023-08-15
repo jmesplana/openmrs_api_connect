@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-"""omrs.py: Simple REST client for testing OpenMRS API"""
-
+#from azure_sso import authenticate_via_azure
 import argparse
 import yaml
 import requests
@@ -12,6 +11,8 @@ import csv
 DEFAULT_CONFIG_FILE = 'omrs.yml'
 DEFAULT_USER = 'admin'
 DEFAULT_PASSWORD = 'Admin123'
+
+#azure_session = authenticate_via_azure()
 
 # Command line parsing
 parser = argparse.ArgumentParser(description='OpenMRS REST API Client for Location Operations')
@@ -58,12 +59,23 @@ def openmrs_get(url):
     resp.raise_for_status()
     return resp.json().get('results', [])
 
+    '''Request a list of results from API and return them'''
+   # resp = azure_session.get(url)  # Use the authenticated session here
+   # resp.raise_for_status()
+   # return resp.json().get('results', [])
+
 def openmrs_post(url, data_json):
     '''Create a new resource and return its uuid'''
     headers = {'Content-type': 'application/json'}
     resp = requests.post(url, data_json, headers=headers, auth=(user, pw))
     resp.raise_for_status()
     return resp.json()['uuid']
+
+    '''Create a new resource and return its uuid'''
+    #headers = {'Content-type': 'application/json'}
+    #resp = azure_session.post(url, data_json, headers=headers)  # Use the authenticated session here
+    #resp.raise_for_status()
+    #return resp.json()['uuid']
 
 def get_location_uuid_by_name(name):
     '''Retrieve location UUID by its name'''
