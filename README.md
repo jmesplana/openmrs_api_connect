@@ -1,71 +1,96 @@
-OpenMRS REST Client
-===================
+Absolutely. I'll format the documentation in markdown for easy copy-pasting into GitHub.
 
-This is a simple command line client for testing the [OpenMRS](https://openmrs.org/)
-REST API.
+---
 
-## Setup
+# OpenMRS REST API Client for Location Operations
 
-### Running natively
+This script, `omrs_locations_csv.py`, provides a simple REST client for interacting with the OpenMRS API, focusing on location-related operations using CSV input.
 
-To run [`omrs.py`](omrs.py) natively, ou must have a few python libraries installed:
+## Features
 
-`pip install requests pyyaml python-dateutil`
+- **List Locations**: Fetches all locations from OpenMRS.
+- **Add New Location**: Adds a new location to OpenMRS.
+- **Update Existing Location**: Modifies details of an existing location in OpenMRS.
+- **Command-Line Interface**: Supports various command-line arguments for easy configuration and usage.
+- **CSV Parsing**: Parses location data from a CSV file to either add or update locations in OpenMRS.
 
-### Run using Docker
+## Requirements
 
-Alternatively, if you have [Docker](https://www.docker.com/) installed (why wouldn't 
-you?), then you don't need to install or configure python and can run the script using
-Docker:
-
-`docker-compose run --rm omrs omrs.py help`
+1. **Python 3**
+2. Python packages:
+   - `requests`
+   - `yaml`
+  
+   Install the required packages using:
+   ```bash
+   pip install requests pyyaml
+   ```
 
 ## Usage
 
-`./omrs.py help`
+### Command Line Arguments
 
-* Displays usage
+- **General Arguments**:
+  - `--config, -c`: Path to the configuration file. Default is `omrs.yml`.
+  - `--base_url, -b`: URL of OpenMRS API up to the version number (without the ending slash).
+  - `--user, -u`: Username for API authentication. Default is `admin`.
+  - `--pw, -p`: Password for API authentication. Default is `Admin123`.
+  - `--quiet, -q`: Run the script quietly without verbose output.
+  - `--csv, -csv`: Path to a CSV file containing location data.
 
-`./omrs.py patient -gn Norman -fn Schnoggenlocher -g m -a 42`
+- **Subcommands**:
+  - `locations`: List locations.
+  - `addlocation`: Add a new location. Requires `--name`. Optional: `--description`, `--tags`, `--country`, `--parentLocation`.
+  - `updatelocation`: Update an existing location. Requires `--uuid`. Optional: `--name`, `--description`, `--tags`, `--country`, `--parentLocation`.
 
-* Create a 42 year-old male patient named Norman Schnoggenlocher
+### Configuration File (`omrs.yml`)
 
-`./omrs.py find -c weight`
+For ease of use, the default configuration file is named `omrs.yml` and should contain:
+```yaml
+base_url: "YOUR_OPENMRS_API_URL"
+user: "YOUR_USERNAME"
+pw: "YOUR_PASSWORD"
+```
+Replace placeholders with appropriate details.
 
-* Search concepts for "weight" and show UUID of each
+### CSV Format
 
-`./omrs.py obs -p 123-0 -c 5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -v 70 -dt 2017-03-01 23:11`
+If providing a CSV file for location data, the script expects:
+- `UUID`: Unique identifier for the location.
+- `name`: Name of the location.
+- `Description`: (Optional) Description of the location.
+- `Tags`: (Optional) Comma-separated tags for the location.
+- `Country`: (Optional) Country of the location.
+- `ParentLocation`: (Optional) Parent location name.
 
-* Create an observation for patient 123-0 for Weight (kg) = 70 on 1 March, 2017 at 23:11
+**Note**: CSV delimiter is `;`.
 
-`./omrs.py obs -p 123-0 -c 1284AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -vc 142412AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA` -dt t-3w
+### Examples
 
-* Create an observation for patient 123-0 of PROBLEM LIST = Diarrhea with timestamp of 3 weeks ago _(note that `-vc` is used to indicate a "value coded" for an observation answered with a coded concept)_
+1. **List Locations**:
+   ```bash
+   python omrs_locations_csv.py locations
+   ```
 
-`./omrs.py died -p 123-0 -d 2017-03-01`
+2. **Add New Location**:
+   ```bash
+   python omrs_locations_csv.py addlocation --name "New Location" --description "This is a new location."
+   ```
 
-* Mark patient 123-0 as having died on 1 March, 2017
+3. **Update Existing Location**:
+   ```bash
+   python omrs_locations_csv.py updatelocation --uuid "LOCATION_UUID" --name "Updated Location Name"
+   ```
 
-`./omrs.py identifiertypes`
+4. **Process Locations from CSV**:
+   ```bash
+   python omrs_locations_csv.py --csv "path_to_file.csv"
+   ```
 
-* List known identifier types and their UUID
+## Conclusion
 
-`./omrs.py locations`
+`omrs_locations_csv.py` offers a convenient interface to interact with the OpenMRS API for location-related tasks. Ensure that your OpenMRS instance and API are properly set up and accessible before using this script.
 
-* List know locations and their UUID
+---
 
-> Dates can be in the format 'YYYY-MM-DD' or given as a relative dates:
-> * "t" for today
-> * "t-3d" for 3 days ago
-> * "t-7w" for 7 weeks ago
-> * "t-2m" for 2 months ago
-
-## Options
-
-The following options may be optionally specified on the command line.
-
-* **--config** (or -c): location of configuration file (default is `omrs.yml`)
-* **--base_url** (or -b): URL of OpenMRS instance running REST web services module without ending slash (e.g., `https://demo.openmrs.org/openmrs`)
-* **--user** and **--pw** (or -u and -p): credentials to use for REST API calls (default to demo admin)
-* **--quiet** (or -q): suppresses some output
-* **--version** (or -v): display script version
+You can now copy and paste the above documentation directly into your GitHub README.
